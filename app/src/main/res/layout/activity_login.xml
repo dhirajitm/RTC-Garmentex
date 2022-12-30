@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/logo_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/view_margin_20"
+                android:adjustViewBounds="true"
+                android:src="@drawable/logo_full"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/title_tv"
+                style="@style/title_bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:text="@string/login_to"
+                app:layout_constraintTop_toBottomOf="@id/logo_login" />
+
+            <EditText
+                android:id="@+id/user_email_et"
+                style="@style/edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/view_margin_20"
+                android:layout_marginTop="40dp"
+                android:drawableEnd="@drawable/ic_outline_perm_identity_24"
+                android:hint="@string/user_email_phone"
+                android:importantForAutofill="no"
+                android:inputType="textEmailAddress"
+                android:maxLength="50"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/title_tv" />
+
+            <TextView
+                android:id="@+id/user_email_error"
+                style="@style/error_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/view_margin_20"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="Email/Phone required"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/user_email_et" />
+
+            <EditText
+                android:id="@+id/user_password_et"
+                style="@style/edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/view_margin_20"
+                android:layout_marginTop="@dimen/view_margin_20"
+                android:drawableEnd="@drawable/ic_outline_lock_24"
+                android:hint="@string/password"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                android:maxLength="20"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/user_email_error" />
+
+            <TextView
+                android:id="@+id/user_password_error"
+                style="@style/error_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/view_margin_20"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:text="Password required"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/user_password_et" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/remember_cb"
+                style="@style/my_checkbox_style"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/view_margin_20"
+                android:checked="false"
+                android:padding="4dp"
+                android:text="Remember me"
+                app:layout_constraintTop_toBottomOf="@id/user_password_error" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/sign_in_btn"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/view_margin_20"
+                android:layout_marginTop="@dimen/view_margin_20"
+                android:text="@string/sign_in"
+                android:theme="@style/ButtonStyle"
+                app:layout_constraintTop_toBottomOf="@id/remember_cb" />
+
+            <TextView
+                android:id="@+id/error_tv"
+                style="@style/error_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/view_margin_20"
+                android:paddingHorizontal="4dp"
+                android:text="@string/invalid_credentials"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/sign_in_btn" />
+
+            <LinearLayout
+                android:id="@+id/progressbar"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:indeterminate="true"
+                    android:indeterminateTint="@color/error_color"
+                    android:max="100"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</ScrollView>
