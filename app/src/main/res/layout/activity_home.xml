@@ -76,6 +76,17 @@
         android:theme="@style/ButtonStyle"
         app:layout_constraintTop_toBottomOf="@id/order_list_btn" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/add_receiving_btn"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/view_margin_20"
+        android:layout_marginTop="@dimen/view_margin_20"
+        android:text="Add Receiving"
+        android:theme="@style/ButtonStyle"
+        app:layout_constraintTop_toBottomOf="@id/add_order_btn" />
+
     <LinearLayout
         android:id="@+id/progressbar"
         android:layout_width="match_parent"

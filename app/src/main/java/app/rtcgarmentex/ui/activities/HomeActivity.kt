@@ -37,6 +37,10 @@ class HomeActivity : BaseActivity() {
             startActivity(Intent(this, AddOrderActivity::class.java))
             finish()
         }
+
+        mBinding.addReceivingBtn.setOnClickListener {
+            startActivity(Intent(this, AddReceivingActivity::class.java))
+        }
     }
 
     private fun popupMenu() {

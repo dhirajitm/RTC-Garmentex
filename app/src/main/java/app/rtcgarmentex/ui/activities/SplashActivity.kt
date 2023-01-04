@@ -3,10 +3,11 @@ package app.rtcgarmentex.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
 import app.rtcgarmentex.databinding.ActivitySplashBinding
 import app.rtcgarmentex.utils.SharedPrefHelper
 
-class SplashActivity : BaseActivity() {
+class SplashActivity : AppCompatActivity() {
     lateinit var mBinding: ActivitySplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
