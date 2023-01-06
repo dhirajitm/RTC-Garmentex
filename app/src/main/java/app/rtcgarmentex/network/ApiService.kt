@@ -7,7 +7,9 @@ import app.rtcgarmentex.data.response.*
 import app.rtcgarmentex.utils.ConstantsHelper.GET_CUSTOMER_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.GET_ORDER_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.GET_ORDER_LIST_PAGE
+import app.rtcgarmentex.utils.ConstantsHelper.GET_PARTICULAR_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.GET_SUPPLIER_LIST
+import app.rtcgarmentex.utils.ConstantsHelper.GET_TRANSPORT_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.POST_ADD_ORDER
 import app.rtcgarmentex.utils.ConstantsHelper.POST_LOGIN
 import app.rtcgarmentex.utils.ConstantsHelper.POST_UPDATE_PASSWORD
@@ -47,5 +49,11 @@ ApiService {
 
     @GET(GET_CUSTOMER_LIST)
     fun getCustomerList(): Call<ArrayList<CustomerResponse>>
+
+    @GET(GET_PARTICULAR_LIST)
+    fun getParticularList(): Call<ArrayList<StringResponse>>
+
+    @GET(GET_TRANSPORT_LIST)
+    fun getTransportList(): Call<ArrayList<StringResponse>>
 
 }

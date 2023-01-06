@@ -1,8 +1,8 @@
 package app.rtcgarmentex.utils
 
 object ConstantsHelper {
-    //    const val BASE_URL = "http://aviationndts.com/rtc/public/api/"
-    const val BASE_URL = "http://www.rtcgarmentex.com/app/public/api/"
+    const val BASE_URL = "http://aviationndts.com/rtc/public/api/"
+//    const val BASE_URL = "http://www.rtcgarmentex.com/app/public/api/"
 
     const val POST_LOGIN = "login"
     const val POST_UPDATE_PROFILE = "update-user-profile"
@@ -13,6 +13,8 @@ object ConstantsHelper {
     const val SEARCH_ORDER_LIST = "search-order"
     const val GET_SUPPLIER_LIST = "get-all-suppliers"
     const val GET_CUSTOMER_LIST = "get-all-customers"
+    const val GET_PARTICULAR_LIST = "get_all_goods"
+    const val GET_TRANSPORT_LIST = "get_all_transport"
 
     const val MIN_PASSWORD_LENGTH = 6
     const val PHONE_NUMBER_LENGTH = 10

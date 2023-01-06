@@ -17,6 +17,8 @@
     <string name="select">Select</string>
     <string name="select_supplier">Select Supplier</string>
     <string name="select_customer">Select Customer</string>
+    <string name="select_transport">Select Transport</string>
+    <string name="select_particular">Select Particular</string>
     <string name="search">Search</string>
     <string name="order_number">Order Number</string>
 

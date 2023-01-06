@@ -10,16 +10,15 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import app.rtcgarmentex.utils.NetworkHelperUtil
 import app.rtcgarmentex.utils.Utils
 import com.google.android.material.snackbar.Snackbar
 
 open class BaseActivity : AppCompatActivity() {
-    val TAG: String = BaseActivity::class.java.simpleName
+    private val TAG: String = BaseActivity::class.java.simpleName
     var mToast: Toast? = null
-    var connectivityBroadcastReceiver: BroadcastReceiver? = null
-    var snackbar: Snackbar? = null
-    var fullScreenDialog: AlertDialog? = null
+    private var connectivityBroadcastReceiver: BroadcastReceiver? = null
+    private var snackbar: Snackbar? = null
+    private var fullScreenDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,15 +41,17 @@ open class BaseActivity : AppCompatActivity() {
     private fun initConnectivityBroadcastReceiver() {
         connectivityBroadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(p0: Context?, p1: Intent?) {
+/*
                 if (NetworkHelperUtil.isOnline()) {
                     Log.d(TAG, "onReceive: Connected")
                     dismissSnackbar()
-//                    hideInternetDialog()
+                    hideInternetDialog()
                 } else {
                     Log.d(TAG, "onReceive: Not Connected")
                     showNoInternetConnectionSnackbar()
-//                    showNoInternetDialog()
+                    showNoInternetDialog()
                 }
+*/
             }
         }
     }
@@ -83,8 +84,11 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     private fun hideInternetDialog() {
+        Log.d(TAG, "onReceive: Hide Started")
         if (fullScreenDialog != null && fullScreenDialog!!.isShowing) {
+            fullScreenDialog!!.hide()
             fullScreenDialog!!.dismiss()
+            Log.d(TAG, "onReceive: Hide End")
         }
     }
 

@@ -14,6 +14,7 @@ import app.rtcgarmentex.R
 import app.rtcgarmentex.data.ParticularModel
 import app.rtcgarmentex.data.response.BaseResponseModel
 import app.rtcgarmentex.data.response.CustomerResponse
+import app.rtcgarmentex.data.response.StringResponse
 import app.rtcgarmentex.data.response.SupplierResponse
 import app.rtcgarmentex.databinding.ActivityAddOrderBinding
 import app.rtcgarmentex.network.ApiClient
@@ -28,6 +29,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class AddOrderActivity : BaseActivity(), ParticularListener {
@@ -39,6 +41,8 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
     private var customerList = ArrayList<CustomerResponse>()
     private var supplierNames = ArrayList<String>()
     private var customerNames = ArrayList<String>()
+    private var particularItemNames = ArrayList<String>()
+    private var transportNames = ArrayList<String>()
     private var fromDate: String = ""
     private var toDate: String = ""
     private var customerId: String = ""
@@ -51,6 +55,8 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
         initAdapter()
         getSupplierList()
         getCustomerList()
+        getParticularItemList()
+        getTransportList()
 
         mBinding.customerSp.setOnClickListener {
             showCustomerDialog()
@@ -83,6 +89,39 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
         mBinding.backIv.setOnClickListener {
             onBackPressed()
         }
+
+        mBinding.transportEt.setOnClickListener {
+            showTransportDialog()
+        }
+    }
+
+    private fun showTransportDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_searchable_spinner)
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+        val editText = dialog.findViewById<EditText>(R.id.edit_text)
+        (dialog.findViewById<TextView>(R.id.title)).setText(getString(R.string.select_transport))
+        val listView = dialog.findViewById<ListView>(R.id.list_view)
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, transportNames)
+        listView.adapter = adapter
+
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                adapter.filter.filter(s)
+            }
+
+            override fun afterTextChanged(s: Editable) {}
+        })
+
+        listView.setOnItemClickListener { parent, view, position, id ->
+            mBinding.transportEt.setText(adapter.getItem(position).toString()) // The item that was clicked
+//            ToastHelper.showSnackBar(mBinding.root, supplierId)
+            dialog.dismiss()
+        }
+
     }
 
     private fun showCustomerDialog() {
@@ -235,6 +274,52 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
             }
 
             override fun onFailure(call: Call<ArrayList<CustomerResponse>>, t: Throwable) {
+                mBinding.progressbar.visibility = GONE
+                ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
+            }
+
+        })
+    }
+
+    private fun getParticularItemList() {
+        mBinding.progressbar.visibility = VISIBLE
+        val retrofit = ApiClient.buildService(ApiService::class.java)
+        retrofit.getParticularList().enqueue(object : Callback<ArrayList<StringResponse>> {
+            override fun onResponse(call: Call<ArrayList<StringResponse>>, response: Response<ArrayList<StringResponse>>) {
+                mBinding.progressbar.visibility = GONE
+                if (response.isSuccessful) {
+                    particularItemNames.clear()
+                    for (c in response.body()!!) {
+                        particularItemNames.add(c.name)
+                    }
+                }
+                addParticularAdapter.setParticularItemList(particularItemNames)
+            }
+
+            override fun onFailure(call: Call<ArrayList<StringResponse>>, t: Throwable) {
+                mBinding.progressbar.visibility = GONE
+                ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
+            }
+
+        })
+    }
+
+    private fun getTransportList() {
+        mBinding.progressbar.visibility = VISIBLE
+        val retrofit = ApiClient.buildService(ApiService::class.java)
+        retrofit.getTransportList().enqueue(object : Callback<ArrayList<StringResponse>> {
+            override fun onResponse(call: Call<ArrayList<StringResponse>>, response: Response<ArrayList<StringResponse>>) {
+                mBinding.progressbar.visibility = GONE
+                if (response.isSuccessful) {
+                    val transports:ArrayList<StringResponse> = response.body()!!
+                    transportNames.clear()
+                    for (c in transports) {
+                        transportNames.add(c.name)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<StringResponse>>, t: Throwable) {
                 mBinding.progressbar.visibility = GONE
                 ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
             }

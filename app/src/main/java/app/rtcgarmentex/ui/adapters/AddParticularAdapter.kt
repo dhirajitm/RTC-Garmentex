@@ -1,5 +1,6 @@
 package app.rtcgarmentex.ui.adapters
 
+import android.app.Dialog
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,17 +8,28 @@ import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.ListView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import app.rtcgarmentex.R
 import app.rtcgarmentex.data.ParticularModel
+import app.rtcgarmentex.data.response.CustomerResponse
 import app.rtcgarmentex.databinding.RowAddParticularsBinding
 import app.rtcgarmentex.ui.listeners.ParticularListener
 
 class AddParticularAdapter(private val context: Context, private val listener: ParticularListener) : RecyclerView.Adapter<AddParticularAdapter.ViewHolder>() {
     private var items = mutableListOf<ParticularModel>()
     lateinit var mBinding: RowAddParticularsBinding
+    private var particularItemList: ArrayList<String>? = null
 
     init {
         items = ArrayList()
+    }
+
+    fun setParticularItemList(items: ArrayList<String>) {
+        particularItemList = items
     }
 
     fun setData(data: ArrayList<ParticularModel>) {
@@ -64,21 +76,34 @@ class AddParticularAdapter(private val context: Context, private val listener: P
             } else {
                 itemBinding.amountEt.setText(item.amount.toString())
             }
-            itemBinding.particularEt.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
+            itemBinding.particularEt.setOnClickListener {
+                val dialog = Dialog(context)
+                dialog.setContentView(R.layout.dialog_searchable_spinner)
+                dialog.show()
+                dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    if (p0.toString().isNotEmpty()) {
-                        item.particular = p0.toString()
-                        listener.updateParticular(position, item)
+                val editText = dialog.findViewById<EditText>(R.id.edit_text)
+                (dialog.findViewById<TextView>(R.id.title)).setText(context.getString(R.string.select_particular))
+                val listView = dialog.findViewById<ListView>(R.id.list_view)
+                val adapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, particularItemList!!)
+                listView.adapter = adapter
+
+                editText.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                        adapter.filter.filter(s)
                     }
-                }
 
-                override fun afterTextChanged(p0: Editable?) {
-                }
+                    override fun afterTextChanged(s: Editable) {}
+                })
 
-            })
+                listView.setOnItemClickListener { parent, view, pos, id ->
+                    itemBinding.particularEt.setText(adapter.getItem(pos)) // The item that was clicked
+                    item.particular = adapter.getItem(pos).toString()
+                    listener.updateParticular(position, item)
+                    dialog.dismiss()
+                }
+            }
 
             itemBinding.typeEt.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
