@@ -11,7 +11,7 @@
     <color name="app_red">#BD0000</color>
     <color name="text_title">#0E0E0E</color>
     <color name="et_border">#4C4C4C</color>
-    <color name="et_disabled">#D8D8D8</color>
+    <color name="et_disabled">#E4E4E4</color>
     <color name="error_color">#CD0000</color>
     <color name="app_text_color">#292929</color>
     <color name="home_bg">#F3F3F3</color>

@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/view_margin_20"
-        android:layout_marginTop="@dimen/view_margin_20"
+        android:layout_marginTop="@dimen/margin_top_home_menu"
         android:text="Order List"
         android:theme="@style/ButtonStyle"
         app:layout_constraintTop_toBottomOf="@id/total_order_card" />
@@ -71,10 +71,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/view_margin_20"
-        android:layout_marginTop="@dimen/view_margin_20"
+        android:layout_marginTop="@dimen/margin_top_home_menu"
         android:text="Add Order"
         android:theme="@style/ButtonStyle"
         app:layout_constraintTop_toBottomOf="@id/order_list_btn" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/receiving_list_btn"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/view_margin_20"
+        android:layout_marginTop="@dimen/margin_top_home_menu"
+        android:text="Receiving List"
+        android:theme="@style/ButtonStyle"
+        app:layout_constraintTop_toBottomOf="@id/add_order_btn" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/add_receiving_btn"
@@ -82,10 +93,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/view_margin_20"
-        android:layout_marginTop="@dimen/view_margin_20"
+        android:layout_marginTop="@dimen/margin_top_home_menu"
         android:text="Add Receiving"
         android:theme="@style/ButtonStyle"
-        app:layout_constraintTop_toBottomOf="@id/add_order_btn" />
+        app:layout_constraintTop_toBottomOf="@id/receiving_list_btn" />
 
     <LinearLayout
         android:id="@+id/progressbar"

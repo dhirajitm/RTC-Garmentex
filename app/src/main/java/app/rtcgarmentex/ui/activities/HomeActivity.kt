@@ -1,13 +1,11 @@
 package app.rtcgarmentex.ui.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import app.rtcgarmentex.R
-import app.rtcgarmentex.data.response.BaseResponseModel
 import app.rtcgarmentex.data.response.OrderListResponse
 import app.rtcgarmentex.databinding.ActivityHomeBinding
 import app.rtcgarmentex.network.ApiClient
@@ -36,6 +34,10 @@ class HomeActivity : BaseActivity() {
         mBinding.addOrderBtn.setOnClickListener {
             startActivity(Intent(this, AddOrderActivity::class.java))
             finish()
+        }
+
+        mBinding.receivingListBtn.setOnClickListener {
+            startActivity(Intent(this, ReceivingListActivity::class.java))
         }
 
         mBinding.addReceivingBtn.setOnClickListener {

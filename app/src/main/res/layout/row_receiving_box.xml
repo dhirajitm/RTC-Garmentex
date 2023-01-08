@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/receiving_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/receiving_bg"
+        android:paddingHorizontal="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!--SNo-->
+        <TextView
+            android:id="@+id/sn_tv"
+            style="@style/normal_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:text="S.No."
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/sn_et"
+            style="@style/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:enabled="false"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:maxLength="50"
+            android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@id/sn_tv" />
+
+        <!--Particulars-->
+        <TextView
+            android:id="@+id/particulars_tv"
+            style="@style/normal_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:text="Particulars"
+            app:layout_constraintTop_toBottomOf="@id/sn_et" />
+
+        <EditText
+            android:id="@+id/particular_et"
+            style="@style/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:enabled="false"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:maxLength="50"
+            android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@id/particulars_tv" />
+
+        <!--Type-->
+        <TextView
+            android:id="@+id/type_tv"
+            style="@style/normal_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:text="Type"
+            app:layout_constraintTop_toBottomOf="@id/particular_et" />
+
+        <EditText
+            android:id="@+id/type_et"
+            style="@style/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:enabled="false"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:maxLength="50"
+            android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@id/type_tv" />
+
+        <!--Total Qty-->
+        <TextView
+            android:id="@+id/qty_tv"
+            style="@style/normal_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:text="Total Qty"
+            app:layout_constraintTop_toBottomOf="@id/type_et" />
+
+        <EditText
+            android:id="@+id/qty_et"
+            style="@style/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:enabled="false"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:maxLength="50"
+            android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@id/qty_tv" />
+
+        <!--Amount-->
+        <TextView
+            android:id="@+id/amount_tv"
+            style="@style/normal_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="6dp"
+            android:text="Amount"
+            app:layout_constraintTop_toBottomOf="@id/qty_et" />
+
+        <EditText
+            android:id="@+id/amount_et"
+            style="@style/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:enabled="false"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:maxLength="50"
+            android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@id/amount_tv" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/received_item_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/amount_et"
+            tools:itemCount="1"
+            tools:listitem="@layout/row_received_item" />
+
+        <!--Order Completed-->
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Order Completed"
+            app:buttonTint="@color/app_red"
+            app:layout_constraintTop_toBottomOf="@id/received_item_rv" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

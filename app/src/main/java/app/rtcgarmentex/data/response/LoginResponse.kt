@@ -6,7 +6,6 @@ data class LoginResponse(
     @SerializedName("data")
     val data: LoginData
 ) : BaseResponseModel() {
-
     data class LoginData(
         @SerializedName("email")
         val email: String,

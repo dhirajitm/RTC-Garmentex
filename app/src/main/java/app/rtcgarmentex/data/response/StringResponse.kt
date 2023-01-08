@@ -7,8 +7,6 @@ data class StringResponse(
     val id: Int,
     @SerializedName("name")
     val name: String
-
-
 ) {
     override fun equals(other: Any?): Boolean {
         return super.equals(other)

@@ -19,8 +19,10 @@
     <string name="select_customer">Select Customer</string>
     <string name="select_transport">Select Transport</string>
     <string name="select_particular">Select Particular</string>
+    <string name="select_order">Select Order</string>
     <string name="search">Search</string>
     <string name="order_number">Order Number</string>
+    <string name="no_record_found">No record found.</string>
 
     <string-array name="empty_spinner">
         <item>@string/select</item>

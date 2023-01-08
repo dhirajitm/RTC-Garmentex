@@ -26,6 +26,10 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activities.ReceivingListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activities.OrderListActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

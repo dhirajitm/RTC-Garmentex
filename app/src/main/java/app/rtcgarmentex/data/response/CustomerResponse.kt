@@ -7,8 +7,6 @@ data class CustomerResponse(
     val id: Int,
     @SerializedName("firm_name")
     val firmName: String
-
-
 ) {
     override fun equals(other: Any?): Boolean {
         return super.equals(other)

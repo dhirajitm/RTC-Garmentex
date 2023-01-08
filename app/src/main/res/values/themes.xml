@@ -17,6 +17,12 @@
         <item name="android:textColor">@color/text_title</item>
     </style>
 
+    <style name="small_bold">
+        <item name="android:textSize">13sp</item>
+        <item name="fontFamily">@font/nunito_bold</item>
+        <item name="android:textColor">@color/text_title</item>
+    </style>
+
     <style name="normal_text">
         <item name="android:textSize">15sp</item>
         <item name="fontFamily">@font/nunito_regular</item>

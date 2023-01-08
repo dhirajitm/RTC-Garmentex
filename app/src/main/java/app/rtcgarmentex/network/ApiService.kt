@@ -4,10 +4,13 @@ import app.rtcgarmentex.data.request.LoginRequest
 import app.rtcgarmentex.data.request.PasswordRequest
 import app.rtcgarmentex.data.request.ProfileRequest
 import app.rtcgarmentex.data.response.*
+import app.rtcgarmentex.data.response.receivingResponse.ReceivingDetailResponse
 import app.rtcgarmentex.utils.ConstantsHelper.GET_CUSTOMER_LIST
-import app.rtcgarmentex.utils.ConstantsHelper.GET_ORDER_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.GET_ORDER_LIST_PAGE
 import app.rtcgarmentex.utils.ConstantsHelper.GET_PARTICULAR_LIST
+import app.rtcgarmentex.utils.ConstantsHelper.GET_RECEIVING_DETAILS
+import app.rtcgarmentex.utils.ConstantsHelper.GET_RECEIVING_LIST_PAGE
+import app.rtcgarmentex.utils.ConstantsHelper.GET_RECEIVING_SEARCH_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.GET_SUPPLIER_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.GET_TRANSPORT_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.POST_ADD_ORDER
@@ -55,5 +58,14 @@ ApiService {
 
     @GET(GET_TRANSPORT_LIST)
     fun getTransportList(): Call<ArrayList<StringResponse>>
+
+    @GET(GET_RECEIVING_LIST_PAGE)
+    fun getReceivingList(@Query("emp_id") emp_id: Int, @Query("page") page: Int): Call<ReceivingListResponse>
+
+    @GET(GET_RECEIVING_SEARCH_LIST)
+    fun getReceivingSearchList(@Query("emp_id") emp_id: Int): Call<ReceivingOrdersSearchListResponse>
+
+    @GET(GET_RECEIVING_DETAILS)
+    fun getReceivingDetails(@Query("emp_id") emp_id: Int, @Query("order_no") orderNo: String): Call<ReceivingDetailResponse>
 
 }
