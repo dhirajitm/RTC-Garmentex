@@ -2,67 +2,128 @@ package app.rtcgarmentex.ui.adapters
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.recyclerview.widget.RecyclerView
-import app.rtcgarmentex.R
+import app.rtcgarmentex.data.ParticularModel
 import app.rtcgarmentex.data.response.receivingResponse.ReceivedItem
+import app.rtcgarmentex.databinding.RowAddParticularsBinding
 import app.rtcgarmentex.databinding.RowReceivedItemBinding
+import app.rtcgarmentex.ui.listeners.ReceivingItemListener
 import java.util.*
 
-class ViewReceivingItemAdapter(private val context: Context) : RecyclerView.Adapter<ViewReceivingItemAdapter.ViewHolder>() {
+class ViewReceivingItemAdapter(private var context: Context, private var listener: ReceivingItemListener) : RecyclerView.Adapter<ViewReceivingItemAdapter.ViewHolder>() {
     private var receivedItemList = mutableListOf<ReceivedItem>()
     lateinit var mBinding: RowReceivedItemBinding
-
+    var parentPos = -1
     init {
         receivedItemList = ArrayList()
     }
 
-    fun setData(data: ArrayList<ReceivedItem>) {
+    fun setData(data: ArrayList<ReceivedItem>, pos:Int) {
+        parentPos = pos
+        Log.d("TAG", "ViewReceivingItemAdapter: setData == " + data)
         receivedItemList.clear()
         receivedItemList = data.toMutableList()
         notifyDataSetChanged()
     }
 
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val receivingDateEt: EditText = itemView.findViewById(R.id.receiving_date_et)
-        val receivingQtyEt: EditText = itemView.findViewById(R.id.receiving_qty_et)
-        val receivingAmountEt: EditText = itemView.findViewById(R.id.receiving_amount_et)
+    inner class ViewHolder(val itemBinding: RowReceivedItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
+
+        fun onBind(item: ReceivedItem, position: Int) {
+            itemBinding.receivingDateEt.setText("")
+            itemBinding.receivingQtyEt.setText("")
+            itemBinding.receivingAmountEt.setText("")
+            Log.d("TAG", "ViewReceivingItemAdapter: ViewHolder $parentPos == " + item.amount)
+
+            // Completed
+            if (item.status == "1") {
+                itemBinding.receivingDateEt.isEnabled = false
+                itemBinding.receivingQtyEt.isEnabled = false
+                itemBinding.receivingAmountEt.isEnabled = false
+            } else {
+                itemBinding.receivingDateEt.isEnabled = true
+                itemBinding.receivingQtyEt.isEnabled = true
+                itemBinding.receivingAmountEt.isEnabled = true
+            }
+            itemBinding.receivingDateEt.setText(item.received_date)
+            if (item.received_quantity > 0)
+                itemBinding.receivingQtyEt.setText(item.received_quantity.toString())
+            if (item.amount > 0)
+                itemBinding.receivingAmountEt.setText(item.amount.toString())
+
+            itemBinding.receivingDateEt.setOnClickListener {
+                openFromDatePicker(itemBinding.receivingDateEt)
+            }
+
+            itemBinding.receivingDateEt.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    if (p0.toString().isNotEmpty()) {
+                        item.received_date = p0.toString()
+//                        listener.updateReceivedItem(position, item)
+                    }
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+
+                }
+
+            })
+            itemBinding.receivingAmountEt.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    if (p0.toString().isNotEmpty()) {
+                        item.amount = p0.toString().toInt()
+//                        listener.updateReceivedItem(position, item)
+                    }
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+
+                }
+
+            })
+            itemBinding.receivingQtyEt.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                }
+
+                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                    if (p0.toString().isNotEmpty()) {
+                        item.received_quantity = p0.toString().toInt()
+//                        listener.updateReceivedItem(position, item)
+                    }
+                }
+
+                override fun afterTextChanged(p0: Editable?) {
+
+                }
+
+            })
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         mBinding = RowReceivedItemBinding.inflate(LayoutInflater.from(context), parent, false)
-        return ViewHolder(mBinding.root)
+        return ViewHolder(mBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.setIsRecyclable(false)
         val item = receivedItemList[position]
-        holder.receivingDateEt.setText("")
-        holder.receivingQtyEt.setText("")
-        holder.receivingAmountEt.setText("")
-
-        // Completed
-        if (item.status == "1") {
-            holder.receivingDateEt.isEnabled = false
-            holder.receivingQtyEt.isEnabled = false
-            holder.receivingAmountEt.isEnabled = false
-        } else {
-            holder.receivingDateEt.isEnabled = true
-            holder.receivingQtyEt.isEnabled = true
-            holder.receivingAmountEt.isEnabled = true
-            holder.receivingDateEt.setText(item.received_date)
-            if (item.received_quantity > 0)
-                holder.receivingQtyEt.setText(item.received_quantity.toString())
-            if (item.amount > 0)
-                holder.receivingAmountEt.setText(item.amount.toString())
-        }
-
-        holder.receivingDateEt.setOnClickListener {
-            openFromDatePicker(holder.receivingDateEt)
-        }
+        holder.onBind(item, position)
     }
 
     override fun getItemCount(): Int {

@@ -18,6 +18,7 @@ object ConstantsHelper {
     const val GET_RECEIVING_LIST_PAGE = "get_employee_receiving"//?emp_id=4&page=1
     const val GET_RECEIVING_SEARCH_LIST = "employee-order-list"//?emp_id=4
     const val GET_RECEIVING_DETAILS = "get_single_receiving"//?emp_id=4&order_no=DLO-1181
+    const val POST_ADD_RECEIVING = "update_receiving2"
 
     const val MIN_PASSWORD_LENGTH = 6
     const val PHONE_NUMBER_LENGTH = 10

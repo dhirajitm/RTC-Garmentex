@@ -140,6 +140,7 @@
 
         <!--Order Completed-->
         <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/completed_cb"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Order Completed"

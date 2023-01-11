@@ -14,6 +14,7 @@ import app.rtcgarmentex.utils.ConstantsHelper.GET_RECEIVING_SEARCH_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.GET_SUPPLIER_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.GET_TRANSPORT_LIST
 import app.rtcgarmentex.utils.ConstantsHelper.POST_ADD_ORDER
+import app.rtcgarmentex.utils.ConstantsHelper.POST_ADD_RECEIVING
 import app.rtcgarmentex.utils.ConstantsHelper.POST_LOGIN
 import app.rtcgarmentex.utils.ConstantsHelper.POST_UPDATE_PASSWORD
 import app.rtcgarmentex.utils.ConstantsHelper.POST_UPDATE_PROFILE
@@ -67,5 +68,8 @@ ApiService {
 
     @GET(GET_RECEIVING_DETAILS)
     fun getReceivingDetails(@Query("emp_id") emp_id: Int, @Query("order_no") orderNo: String): Call<ReceivingDetailResponse>
+
+    @POST(POST_ADD_RECEIVING)
+    fun postAddReceiving(@Body body: MultipartBody): Call<BaseResponseModel>
 
 }
