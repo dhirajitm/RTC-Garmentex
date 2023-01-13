@@ -58,18 +58,56 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
         }
 
         mBinding.submitBtn.setOnClickListener {
-            Log.d("TAG", "onCreate: " + receivingDetails)
-//            Log.d("TAG", "onCreate: " + receivingDetails!!.particularsData[0].receivedItems[0].received_quantity)
-//            Log.d("TAG", "onCreate: " + receivingDetails!!.particularsData[1].receivedItems[0].received_quantity)
-//            Log.d("TAG", "onCreate: " + receivingDetails!!.particularsData[2].receivedItems[0].received_quantity)
-//            Log.d("TAG", "onCreate: " + receivingDetails!!.particularsData[3].receivedItems[0].received_quantity)
-            if(validated()){
+            if (validated()) {
                 submitData()
             }
+        }
+        mBinding.backIv.setOnClickListener {
+            onBackPressed()
         }
     }
 
     private fun validated(): Boolean {
+        val particularList = receivingDetails!!.particularsData
+        for (particularItem in particularList) {
+            val item = particularItem.receivedItems.last()
+            var checkCount = 0
+            if (item.status == "new") {
+                if (item.received_date.isNotEmpty())
+                    checkCount++
+                if (item.received_quantity > 0)
+                    checkCount++
+                if (item.amount > 0)
+                    checkCount++
+
+            }
+            if (checkCount == 0 || checkCount == 3) {
+//                return true
+            } else {
+                if (item.received_date.isEmpty())
+                    ToastHelper.showSnackBar(mBinding.root, "Received date is empty for ${particularItem.orderTotalItems.particular_name}")
+                else if (item.received_quantity == 0)
+                    ToastHelper.showSnackBar(mBinding.root, "Received Qty is empty for ${particularItem.orderTotalItems.particular_name}")
+                else if (item.amount == 0)
+                    ToastHelper.showSnackBar(mBinding.root, "Received Amount is empty for ${particularItem.orderTotalItems.particular_name}")
+
+                return false
+            }
+        }
+
+        for (particularItem in particularList) {
+            val totalItem = particularItem.orderTotalItems.qty
+            var itemInRec = 0
+            for (item in particularItem.receivedItems) {
+                itemInRec += item.received_quantity
+            }
+            if(itemInRec > totalItem){
+                ToastHelper.showSnackBar(mBinding.root, "Received Qty is more than Order Qty for ${particularItem.orderTotalItems.particular_name}")
+                return false
+            }
+        }
+
+
         return true
     }
 
@@ -106,6 +144,7 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
             mBinding.stationEt.setText(body.station)
             mBinding.fromDateEt.setText(body.dispatch_date_from)
             mBinding.toDateEt.setText(body.dispatch_date_to)
+            mBinding.orderStatusSp.setSelection(body.receivingStatus.toInt())
             mBinding.remarkEt.setText(body.remarks)
 
             /*add empty received row*/
@@ -114,8 +153,8 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
                     if (item.receivedItems.isNotEmpty() && item.receivedItems.get(item.receivedItems.size - 1).status == "1") {
 
                     } else {
-                        item.receivedItems.add(ReceivedItem(40 + parentPos, "", 0, 0, 0, "2023-01-09", 5, "1", parentPos))
-                        item.receivedItems.add(ReceivedItem(0, "", 0, 0, 0, "", 0, "0", parentPos))
+//                        item.receivedItems.add(ReceivedItem(40 + parentPos, "", 0, 0, 0, "2023-01-09", 5, "1", parentPos))
+                        item.receivedItems.add(ReceivedItem(0, "", item.orderTotalItems.id, 0, 0, "", 0, "new", parentPos))
                     }
                     parentPos++
                     Log.d("TAG", "onCreate: " + item.receivedItems)
@@ -126,6 +165,7 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
             mBinding.receivingBoxRv.setHasFixedSize(true)
             mBinding.receivingBoxRv.adapter = receivingParticularAdapter
             receivingParticularAdapter.setData(body.particularsData)
+            mBinding.submitBtn.isEnabled = true
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -137,20 +177,24 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
         mBinding.progressbar.visibility = View.VISIBLE
         val multipartBody = MultipartBody.Builder().setType(MultipartBody.FORM)
 
-        multipartBody.addFormDataPart("emp_id", SharedPrefHelper.getUserId(this).toString())
+//        multipartBody.addFormDataPart("emp_id", SharedPrefHelper.getUserId(this).toString())
         multipartBody.addFormDataPart("order_id", receivingDetails!!.id.toString())
         val pos = mBinding.orderStatusSp.selectedItemPosition
         multipartBody.addFormDataPart("order_status", if (pos == 0) "0" else if (pos == 1) "1" else "2")
         val particularList = receivingDetails!!.particularsData
         for (particularItem in particularList) {
-            val item = particularItem.receivedItems[particularItem.receivedItems.size - 1]
-            if (item.status == "0") {
-                multipartBody.addFormDataPart("particular_id[$index]", item.id.toString())
+            val item = particularItem.receivedItems.last()
+            multipartBody.addFormDataPart("particular_id[$index]", particularItem.orderTotalItems.id.toString())
+            if (item.status == "new" && item.received_quantity > 0) {
+                multipartBody.addFormDataPart("particular_received_date[$index]", item.received_date)
                 multipartBody.addFormDataPart("particular_received_qty[$index]", item.received_quantity.toString())
                 multipartBody.addFormDataPart("particular_received_amount[$index]", item.amount.toString())
-                multipartBody.addFormDataPart("particular_received_date[$index]", item.received_date)
-                multipartBody.addFormDataPart("particular_received_status[$index]", if (particularItem.competed) "1" else "0")
+            } else {
+                multipartBody.addFormDataPart("particular_received_date[$index]", "")
+                multipartBody.addFormDataPart("particular_received_qty[$index]", "")
+                multipartBody.addFormDataPart("particular_received_amount[$index]", "")
             }
+            multipartBody.addFormDataPart("particular_received_status[$index]", if (particularItem.competed) "1" else "0")
             index++
         }
 

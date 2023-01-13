@@ -33,13 +33,7 @@ class ReceivingParticularAdapter(private var context: Context, private var liste
             itemBinding.typeEt.setText(item.type)
             itemBinding.qtyEt.setText(item.qty.toString())
             itemBinding.amountEt.setText(item.amount.toString())
-            if (isCompleted(position)) {
-                itemBinding.completedCb.isChecked = true
-                itemBinding.completedCb.isEnabled = false
-            } else {
-                itemBinding.completedCb.isChecked = false
-                itemBinding.completedCb.isEnabled = true
-            }
+            itemBinding.completedCb.isChecked = isCompleted(position)
 
             val viewReceivingItemAdapter = ViewReceivingItemAdapter(context, this)
             val layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
@@ -64,7 +58,6 @@ class ReceivingParticularAdapter(private var context: Context, private var liste
 
 
     fun setData(data: ArrayList<ParticularsData>) {
-        Log.d("TAG", "ReceivingParticularAdapter: " + data)
         particularList.clear()
         particularList = data.toMutableList()
         notifyDataSetChanged()
@@ -92,7 +85,7 @@ class ReceivingParticularAdapter(private var context: Context, private var liste
 
     private fun isCompleted(position: Int): Boolean {
         if (particularList[position].receivedItems.isNotEmpty()) {
-            return particularList.last().receivedItems.last().status == "1"
+            return particularList[position].receivedItems.last().status == "1"
         }
         return false
     }

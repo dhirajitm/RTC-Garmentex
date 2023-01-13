@@ -318,6 +318,7 @@
                             style="@style/Widget.AppCompat.Button.Colored"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:enabled="false"
                             android:layout_marginHorizontal="@dimen/view_margin_20"
                             android:layout_marginTop="@dimen/view_margin_20"
                             android:text="@string/submit"

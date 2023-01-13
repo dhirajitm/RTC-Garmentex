@@ -20,18 +20,17 @@ class ViewReceivingItemAdapter(private var context: Context, private var listene
     private var receivedItemList = mutableListOf<ReceivedItem>()
     lateinit var mBinding: RowReceivedItemBinding
     var parentPos = -1
+
     init {
         receivedItemList = ArrayList()
     }
 
-    fun setData(data: ArrayList<ReceivedItem>, pos:Int) {
+    fun setData(data: ArrayList<ReceivedItem>, pos: Int) {
         parentPos = pos
-        Log.d("TAG", "ViewReceivingItemAdapter: setData == " + data)
         receivedItemList.clear()
         receivedItemList = data.toMutableList()
         notifyDataSetChanged()
     }
-
 
     inner class ViewHolder(val itemBinding: RowReceivedItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
@@ -39,10 +38,9 @@ class ViewReceivingItemAdapter(private var context: Context, private var listene
             itemBinding.receivingDateEt.setText("")
             itemBinding.receivingQtyEt.setText("")
             itemBinding.receivingAmountEt.setText("")
-            Log.d("TAG", "ViewReceivingItemAdapter: ViewHolder $parentPos == " + item.amount)
 
             // Completed
-            if (item.status == "1") {
+            if (item.status != "new") {
                 itemBinding.receivingDateEt.isEnabled = false
                 itemBinding.receivingQtyEt.isEnabled = false
                 itemBinding.receivingAmountEt.isEnabled = false
@@ -87,6 +85,8 @@ class ViewReceivingItemAdapter(private var context: Context, private var listene
                     if (p0.toString().isNotEmpty()) {
                         item.amount = p0.toString().toInt()
 //                        listener.updateReceivedItem(position, item)
+                    } else {
+                        item.amount = 0
                     }
                 }
 
@@ -104,6 +104,8 @@ class ViewReceivingItemAdapter(private var context: Context, private var listene
                     if (p0.toString().isNotEmpty()) {
                         item.received_quantity = p0.toString().toInt()
 //                        listener.updateReceivedItem(position, item)
+                    } else {
+                        item.received_quantity = 0
                     }
                 }
 
@@ -150,8 +152,9 @@ class ViewReceivingItemAdapter(private var context: Context, private var listene
             },
             // on below line we are passing year, month
             // and day for the selected date in our date picker.
-            y, m, d
+            y, m, d,
         )
+        datePickerDialog.datePicker.maxDate = Date().time
         // at last we are calling show
         // to display our date picker dialog.
         datePickerDialog.show()
