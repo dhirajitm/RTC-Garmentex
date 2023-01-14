@@ -101,7 +101,7 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
             for (item in particularItem.receivedItems) {
                 itemInRec += item.received_quantity
             }
-            if(itemInRec > totalItem){
+            if (itemInRec > totalItem) {
                 ToastHelper.showSnackBar(mBinding.root, "Received Qty is more than Order Qty for ${particularItem.orderTotalItems.particular_name}")
                 return false
             }
@@ -144,14 +144,20 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
             mBinding.stationEt.setText(body.station)
             mBinding.fromDateEt.setText(body.dispatch_date_from)
             mBinding.toDateEt.setText(body.dispatch_date_to)
-            mBinding.orderStatusSp.setSelection(body.receivingStatus.toInt())
+            if (body.receivingStatus.toInt() == 0) {
+                mBinding.orderStatusSp.setSelection(0)
+            } else if (body.receivingStatus.toInt() == 1) {
+                mBinding.orderStatusSp.setSelection(2)
+            } else {
+                mBinding.orderStatusSp.setSelection(1)
+            }
             mBinding.remarkEt.setText(body.remarks)
 
             /*add empty received row*/
             if (body.particularsData.isNotEmpty()) {
                 for (item in body.particularsData) {
-                    if (item.receivedItems.isNotEmpty() && item.receivedItems.get(item.receivedItems.size - 1).status == "1") {
-
+                    if (item.receivedItems.isNotEmpty() && item.receivedItems.last().status == "1") {
+                        item.competed = true
                     } else {
 //                        item.receivedItems.add(ReceivedItem(40 + parentPos, "", 0, 0, 0, "2023-01-09", 5, "1", parentPos))
                         item.receivedItems.add(ReceivedItem(0, "", item.orderTotalItems.id, 0, 0, "", 0, "new", parentPos))
@@ -180,7 +186,7 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
 //        multipartBody.addFormDataPart("emp_id", SharedPrefHelper.getUserId(this).toString())
         multipartBody.addFormDataPart("order_id", receivingDetails!!.id.toString())
         val pos = mBinding.orderStatusSp.selectedItemPosition
-        multipartBody.addFormDataPart("order_status", if (pos == 0) "0" else if (pos == 1) "1" else "2")
+        multipartBody.addFormDataPart("order_status", if (pos == 0) "0" else if (pos == 1) "2" else "1")
         val particularList = receivingDetails!!.particularsData
         for (particularItem in particularList) {
             val item = particularItem.receivedItems.last()

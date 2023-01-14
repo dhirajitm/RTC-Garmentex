@@ -23,13 +23,23 @@
     <string name="search">Search</string>
     <string name="order_number">Order Number</string>
     <string name="no_record_found">No record found.</string>
+    <string name="not_received">Not Received</string>
+    <string name="pending">Pending</string>
+    <string name="completed">Completed</string>
+    <string name="case_">Case</string>
+    <string name="loose">Loose</string>
 
     <string-array name="empty_spinner">
         <item>@string/select</item>
     </string-array>
+    <string-array name="type_spinner">
+        <item>@string/select</item>
+        <item>@string/case_</item>
+        <item>@string/loose</item>
+    </string-array>
     <string-array name="order_status_array">
-        <item>Not Received</item>
-        <item>Pending</item>
-        <item>Completed</item>
+        <item>@string/not_received</item>
+        <item>@string/pending</item>
+        <item>@string/completed</item>
     </string-array>
 </resources>

@@ -45,10 +45,16 @@ class ReceivingListAdapter(private val context: Context) : RecyclerView.Adapter<
         holder.buyerTv.text = item.customer_firm_name
         holder.supplierTv.text = item.supplier_firm_name
         holder.dateTv.text = item.order_date
-        if (item.status == "0") {
-            holder.status.setText("Pending")
-        } else {
-            holder.status.setText("Completed")
+        when (item.status) {
+            "2" -> {
+                holder.status.text = context.getString(R.string.pending)
+            }
+            "1" -> {
+                holder.status.text = context.getString(R.string.completed)
+            }
+            else -> {
+                holder.status.text = context.getString(R.string.not_received)
+            }
         }
     }
 

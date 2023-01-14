@@ -311,7 +311,7 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
             override fun onResponse(call: Call<ArrayList<StringResponse>>, response: Response<ArrayList<StringResponse>>) {
                 mBinding.progressbar.visibility = GONE
                 if (response.isSuccessful) {
-                    val transports:ArrayList<StringResponse> = response.body()!!
+                    val transports: ArrayList<StringResponse> = response.body()!!
                     transportNames.clear()
                     for (c in transports) {
                         transportNames.add(c.name)
@@ -431,7 +431,7 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
                 ToastHelper.showSnackBar(mBinding.root, "Particular is required")
                 return false
             }
-            if (p.type.isEmpty()) {
+            if (p.type.isEmpty() || p.type == getString(R.string.select)) {
                 ToastHelper.showSnackBar(mBinding.root, "Type is required")
                 return false
             }

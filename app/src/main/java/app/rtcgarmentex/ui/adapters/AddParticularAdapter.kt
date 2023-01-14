@@ -4,14 +4,14 @@ import android.app.Dialog
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.recyclerview.widget.RecyclerView
 import app.rtcgarmentex.R
 import app.rtcgarmentex.data.ParticularModel
@@ -61,10 +61,12 @@ class AddParticularAdapter(private val context: Context, private val listener: P
             } else {
                 itemBinding.particularEt.setText("")
             }
-            if (item.type.isNotEmpty()) {
-                itemBinding.typeEt.setText(item.type)
+            if (item.type == context.getString(R.string.case_)) {
+                itemBinding.typeEt.setSelection(1)
+            } else if (item.type == context.getString(R.string.loose)) {
+                itemBinding.typeEt.setSelection(2)
             } else {
-                itemBinding.typeEt.setText("")
+                itemBinding.typeEt.setSelection(0)
             }
             if (item.qty == 0) {
                 itemBinding.qtyEt.setText("")
@@ -105,19 +107,15 @@ class AddParticularAdapter(private val context: Context, private val listener: P
                 }
             }
 
-            itemBinding.typeEt.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
+            itemBinding.typeEt.onItemSelectedListener = (object : OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    item.type = p0?.selectedItem.toString()
+                    listener.updateParticular(position, item)
                 }
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    if (p0.toString().isNotEmpty()) {
-                        item.type = p0.toString()
-                        listener.updateParticular(position, item)
-                    }
-                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {
 
-                override fun afterTextChanged(p0: Editable?) {
                 }
 
             })
