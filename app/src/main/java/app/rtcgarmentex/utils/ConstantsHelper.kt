@@ -1,8 +1,8 @@
 package app.rtcgarmentex.utils
 
 object ConstantsHelper {
-    const val BASE_URL = "http://aviationndts.com/rtc/public/api/"
-//    const val BASE_URL = "http://www.rtcgarmentex.com/app/public/api/"
+//    const val BASE_URL = "http://aviationndts.com/rtc/public/api/"
+    const val BASE_URL = "http://www.rtcgarmentex.com/app/public/api/"
 
     const val POST_LOGIN = "login"
     const val POST_UPDATE_PROFILE = "update-user-profile"
