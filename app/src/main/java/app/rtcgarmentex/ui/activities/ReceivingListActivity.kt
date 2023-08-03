@@ -76,7 +76,7 @@ class ReceivingListActivity : BaseActivity() {
         mBinding.progressbar.visibility = VISIBLE
         mBinding.noRecordTv.visibility = GONE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.getReceivingList(SharedPrefHelper.getUserId(this), currentPage).enqueue(object : Callback<ReceivingListResponse> {
+        retrofit.getReceivingList(getHeaderMap(), SharedPrefHelper.getUserId(this), currentPage).enqueue(object : Callback<ReceivingListResponse> {
             override fun onResponse(call: Call<ReceivingListResponse>, response: Response<ReceivingListResponse>) {
                 mBinding.progressbar.visibility = GONE
                 if (response.isSuccessful) {
@@ -115,7 +115,7 @@ class ReceivingListActivity : BaseActivity() {
         mBinding.progressbar.visibility = VISIBLE
         mBinding.noRecordTv.visibility = GONE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.getReceivingList(SharedPrefHelper.getUserId(this), 1).enqueue(object : Callback<ReceivingListResponse> {
+        retrofit.getReceivingList(getHeaderMap(), SharedPrefHelper.getUserId(this), 1).enqueue(object : Callback<ReceivingListResponse> {
             override fun onResponse(call: Call<ReceivingListResponse>, response: Response<ReceivingListResponse>) {
                 mBinding.progressbar.visibility = GONE
                 if (response.isSuccessful) {
@@ -163,4 +163,13 @@ class ReceivingListActivity : BaseActivity() {
             }
         }
     }
+
+    private fun getHeaderMap(): Map<String, String> {
+        val headerMap = mutableMapOf<String, String>()
+        headerMap["userId"] = SharedPrefHelper.getUserId(this).toString()
+        headerMap["branchId"] = SharedPrefHelper.getBranchId(this).toString()
+        headerMap["token"] = SharedPrefHelper.getUserToken(this)
+        return headerMap
+    }
+
 }

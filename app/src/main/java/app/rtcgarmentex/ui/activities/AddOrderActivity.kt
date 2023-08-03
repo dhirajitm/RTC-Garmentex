@@ -8,7 +8,10 @@ import android.text.TextWatcher
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.ListView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.rtcgarmentex.R
 import app.rtcgarmentex.data.ParticularModel
@@ -28,13 +31,17 @@ import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Calendar
 
 
 class AddOrderActivity : BaseActivity(), ParticularListener {
     lateinit var mBinding: ActivityAddOrderBinding
-    private val addParticularAdapter: AddParticularAdapter by lazy { AddParticularAdapter(this, this) }
+    private val addParticularAdapter: AddParticularAdapter by lazy {
+        AddParticularAdapter(
+            this,
+            this
+        )
+    }
 
     private val particularList = ArrayList<ParticularModel>()
     private var supplierList = ArrayList<SupplierResponse>()
@@ -99,12 +106,16 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_searchable_spinner)
         dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        );
 
         val editText = dialog.findViewById<EditText>(R.id.edit_text)
         (dialog.findViewById<TextView>(R.id.title)).setText(getString(R.string.select_transport))
         val listView = dialog.findViewById<ListView>(R.id.list_view)
-        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, transportNames)
+        val adapter =
+            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, transportNames)
         listView.adapter = adapter
 
         editText.addTextChangedListener(object : TextWatcher {
@@ -117,7 +128,9 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
         })
 
         listView.setOnItemClickListener { parent, view, position, id ->
-            mBinding.transportEt.setText(adapter.getItem(position).toString()) // The item that was clicked
+            mBinding.transportEt.setText(
+                adapter.getItem(position).toString()
+            ) // The item that was clicked
 //            ToastHelper.showSnackBar(mBinding.root, supplierId)
             dialog.dismiss()
         }
@@ -128,12 +141,16 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_searchable_spinner)
         dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        );
 
         val editText = dialog.findViewById<EditText>(R.id.edit_text)
         (dialog.findViewById<TextView>(R.id.title)).setText(getString(R.string.select_customer))
         val listView = dialog.findViewById<ListView>(R.id.list_view)
-        val adapter = ArrayAdapter<CustomerResponse>(this, android.R.layout.simple_list_item_1, customerList)
+        val adapter =
+            ArrayAdapter<CustomerResponse>(this, android.R.layout.simple_list_item_1, customerList)
         listView.adapter = adapter
 
         editText.addTextChangedListener(object : TextWatcher {
@@ -156,12 +173,16 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_searchable_spinner)
         dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        );
 
         val editText = dialog.findViewById<EditText>(R.id.edit_text)
         (dialog.findViewById<TextView>(R.id.title)).setText(getString(R.string.select_supplier))
         val listView = dialog.findViewById<ListView>(R.id.list_view)
-        val adapter = ArrayAdapter<SupplierResponse>(this, android.R.layout.simple_list_item_1, supplierList)
+        val adapter =
+            ArrayAdapter<SupplierResponse>(this, android.R.layout.simple_list_item_1, supplierList)
         listView.adapter = adapter
 
         editText.addTextChangedListener(object : TextWatcher {
@@ -195,7 +216,10 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
             { view, year, monthOfYear, dayOfMonth ->
                 // on below line we are setting
                 // date to our edit text.
-                fromDate = (String.format("%04d", year) + "-" + String.format("%02d", (monthOfYear + 1)) + "-" + String.format("%02d", dayOfMonth))
+                fromDate = (String.format("%04d", year) + "-" + String.format(
+                    "%02d",
+                    (monthOfYear + 1)
+                ) + "-" + String.format("%02d", dayOfMonth))
                 mBinding.fromDateEt.setText(fromDate)
             },
             // on below line we are passing year, month
@@ -221,7 +245,10 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
             { view, year, monthOfYear, dayOfMonth ->
                 // on below line we are setting
                 // date to our edit text.
-                toDate = (String.format("%04d", year) + "-" + String.format("%02d", (monthOfYear + 1)) + "-" + String.format("%02d", dayOfMonth))
+                toDate = (String.format("%04d", year) + "-" + String.format(
+                    "%02d",
+                    (monthOfYear + 1)
+                ) + "-" + String.format("%02d", dayOfMonth))
                 mBinding.toDateEt.setText(toDate)
             },
             // on below line we are passing year, month
@@ -236,95 +263,111 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
     private fun getSupplierList() {
         mBinding.progressbar.visibility = VISIBLE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.getSupplierList().enqueue(object : Callback<ArrayList<SupplierResponse>> {
-            override fun onResponse(call: Call<ArrayList<SupplierResponse>>, response: Response<ArrayList<SupplierResponse>>) {
-                mBinding.progressbar.visibility = GONE
-                if (response.isSuccessful) {
-                    supplierList.clear()
-                    supplierList = response.body()!!
-                    supplierNames.clear()
-                    for (s in supplierList) {
-                        supplierNames.add(s.firmName)
+        retrofit.getSupplierList(getHeaderMap())
+            .enqueue(object : Callback<ArrayList<SupplierResponse>> {
+                override fun onResponse(
+                    call: Call<ArrayList<SupplierResponse>>,
+                    response: Response<ArrayList<SupplierResponse>>
+                ) {
+                    mBinding.progressbar.visibility = GONE
+                    if (response.isSuccessful) {
+                        supplierList.clear()
+                        supplierList = response.body()!!
+                        supplierNames.clear()
+                        for (s in supplierList) {
+                            supplierNames.add(s.firmName)
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<ArrayList<SupplierResponse>>, t: Throwable) {
-                mBinding.progressbar.visibility = GONE
-                ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
-            }
+                override fun onFailure(call: Call<ArrayList<SupplierResponse>>, t: Throwable) {
+                    mBinding.progressbar.visibility = GONE
+                    ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
+                }
 
-        })
+            })
     }
 
     private fun getCustomerList() {
         mBinding.progressbar.visibility = VISIBLE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.getCustomerList().enqueue(object : Callback<ArrayList<CustomerResponse>> {
-            override fun onResponse(call: Call<ArrayList<CustomerResponse>>, response: Response<ArrayList<CustomerResponse>>) {
-                mBinding.progressbar.visibility = GONE
-                if (response.isSuccessful) {
-                    customerList.clear()
-                    customerList = response.body()!!
-                    customerNames.clear()
-                    for (c in customerList) {
-                        customerNames.add(c.firmName)
+        retrofit.getCustomerList(getHeaderMap())
+            .enqueue(object : Callback<ArrayList<CustomerResponse>> {
+                override fun onResponse(
+                    call: Call<ArrayList<CustomerResponse>>,
+                    response: Response<ArrayList<CustomerResponse>>
+                ) {
+                    mBinding.progressbar.visibility = GONE
+                    if (response.isSuccessful) {
+                        customerList.clear()
+                        customerList = response.body()!!
+                        customerNames.clear()
+                        for (c in customerList) {
+                            customerNames.add(c.firmName)
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<ArrayList<CustomerResponse>>, t: Throwable) {
-                mBinding.progressbar.visibility = GONE
-                ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
-            }
+                override fun onFailure(call: Call<ArrayList<CustomerResponse>>, t: Throwable) {
+                    mBinding.progressbar.visibility = GONE
+                    ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
+                }
 
-        })
+            })
     }
 
     private fun getParticularItemList() {
         mBinding.progressbar.visibility = VISIBLE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.getParticularList().enqueue(object : Callback<ArrayList<StringResponse>> {
-            override fun onResponse(call: Call<ArrayList<StringResponse>>, response: Response<ArrayList<StringResponse>>) {
-                mBinding.progressbar.visibility = GONE
-                if (response.isSuccessful) {
-                    particularItemNames.clear()
-                    for (c in response.body()!!) {
-                        particularItemNames.add(c.name)
+        retrofit.getParticularList(getHeaderMap())
+            .enqueue(object : Callback<ArrayList<StringResponse>> {
+                override fun onResponse(
+                    call: Call<ArrayList<StringResponse>>,
+                    response: Response<ArrayList<StringResponse>>
+                ) {
+                    mBinding.progressbar.visibility = GONE
+                    if (response.isSuccessful) {
+                        particularItemNames.clear()
+                        for (c in response.body()!!) {
+                            particularItemNames.add(c.name)
+                        }
                     }
+                    addParticularAdapter.setParticularItemList(particularItemNames)
                 }
-                addParticularAdapter.setParticularItemList(particularItemNames)
-            }
 
-            override fun onFailure(call: Call<ArrayList<StringResponse>>, t: Throwable) {
-                mBinding.progressbar.visibility = GONE
-                ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
-            }
+                override fun onFailure(call: Call<ArrayList<StringResponse>>, t: Throwable) {
+                    mBinding.progressbar.visibility = GONE
+                    ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
+                }
 
-        })
+            })
     }
 
     private fun getTransportList() {
         mBinding.progressbar.visibility = VISIBLE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.getTransportList().enqueue(object : Callback<ArrayList<StringResponse>> {
-            override fun onResponse(call: Call<ArrayList<StringResponse>>, response: Response<ArrayList<StringResponse>>) {
-                mBinding.progressbar.visibility = GONE
-                if (response.isSuccessful) {
-                    val transports: ArrayList<StringResponse> = response.body()!!
-                    transportNames.clear()
-                    for (c in transports) {
-                        transportNames.add(c.name)
+        retrofit.getTransportList(getHeaderMap())
+            .enqueue(object : Callback<ArrayList<StringResponse>> {
+                override fun onResponse(
+                    call: Call<ArrayList<StringResponse>>,
+                    response: Response<ArrayList<StringResponse>>
+                ) {
+                    mBinding.progressbar.visibility = GONE
+                    if (response.isSuccessful) {
+                        val transports: ArrayList<StringResponse> = response.body()!!
+                        transportNames.clear()
+                        for (c in transports) {
+                            transportNames.add(c.name)
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<ArrayList<StringResponse>>, t: Throwable) {
-                mBinding.progressbar.visibility = GONE
-                ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
-            }
+                override fun onFailure(call: Call<ArrayList<StringResponse>>, t: Throwable) {
+                    mBinding.progressbar.visibility = GONE
+                    ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
+                }
 
-        })
+            })
     }
 
     private fun submitData() {
@@ -352,9 +395,12 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
         }
 
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.postAddOrder(multipartBody.build())
+        retrofit.postAddOrder(getHeaderMap(), multipartBody.build())
             .enqueue(object : Callback<BaseResponseModel> {
-                override fun onResponse(call: Call<BaseResponseModel>, response: Response<BaseResponseModel>) {
+                override fun onResponse(
+                    call: Call<BaseResponseModel>,
+                    response: Response<BaseResponseModel>
+                ) {
                     mBinding.submitBtn.isEnabled = true
                     mBinding.progressbar.visibility = GONE
                     if (response.isSuccessful) {
@@ -386,14 +432,14 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
             return false
         }
 
-/*
-        if (mBinding.subPartyEt.text.toString().trim().isEmpty()) {
-            mBinding.subPartyEt.setText("")
-            mBinding.subPartyEt.requestFocus()
-            ToastHelper.showSnackBar(mBinding.root, "Sub Party required")
-            return false
-        }
-*/
+        /*
+                if (mBinding.subPartyEt.text.toString().trim().isEmpty()) {
+                    mBinding.subPartyEt.setText("")
+                    mBinding.subPartyEt.requestFocus()
+                    ToastHelper.showSnackBar(mBinding.root, "Sub Party required")
+                    return false
+                }
+        */
 
         if (mBinding.orderTypeEt.text.toString().trim().isEmpty()) {
             mBinding.orderTypeEt.setText("")
@@ -449,7 +495,8 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
     }
 
     private fun initAdapter() {
-        mBinding.particularsRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mBinding.particularsRv.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.particularsRv.setHasFixedSize(true)
         mBinding.particularsRv.adapter = addParticularAdapter
 
@@ -464,5 +511,13 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
 
     override fun updateParticular(position: Int, item: ParticularModel) {
         particularList[position] = item
+    }
+
+    private fun getHeaderMap(): Map<String, String> {
+        val headerMap = mutableMapOf<String, String>()
+        headerMap["userId"] = SharedPrefHelper.getUserId(this).toString()
+        headerMap["branchId"] = SharedPrefHelper.getBranchId(this).toString()
+        headerMap["token"] = SharedPrefHelper.getUserToken(this)
+        return headerMap
     }
 }

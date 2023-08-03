@@ -23,9 +23,9 @@ import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 import retrofit2.http.Query
-import java.util.ArrayList
 
 interface
 ApiService {
@@ -34,42 +34,43 @@ ApiService {
     fun requestLogin(@Body requestOtpRequest: LoginRequest): Call<LoginResponse>
 
     @POST(POST_UPDATE_PROFILE)
-    fun updateProfile(@Body request: ProfileRequest): Call<BaseResponseModel>
+    fun updateProfile(@HeaderMap headers: Map<String, String>, @Body request: ProfileRequest): Call<BaseResponseModel>
 
     @POST(POST_UPDATE_PASSWORD)
-    fun updatePassword(@Body request: PasswordRequest): Call<BaseResponseModel>
+    fun updatePassword(@HeaderMap headers: Map<String, String>, @Body request: PasswordRequest): Call<BaseResponseModel>
 
     @POST(POST_ADD_ORDER)
-    fun postAddOrder(@Body body: MultipartBody): Call<BaseResponseModel>
+    fun postAddOrder(@HeaderMap headers: Map<String, String>, @Body body: MultipartBody): Call<BaseResponseModel>
 
     @GET(GET_ORDER_LIST_PAGE)
-    fun getOrderList(@Query("emp_id") emp_id: Int, @Query("page") page: Int): Call<OrderListResponse>
+    fun getOrderList(@HeaderMap headers: Map<String, String>, @Query("emp_id") emp_id: Int, @Query("page") page: Int): Call<OrderListResponse>
 
     @GET(SEARCH_ORDER_LIST)
-    fun searchOrderList(@Query("emp_id") emp_id: Int, @Query("search") search: String): Call<OrderListResponse>
+    fun searchOrderList(@HeaderMap headers: Map<String, String>, @Query("emp_id") emp_id: Int, @Query("search") search: String): Call<OrderListResponse>
 
     @GET(GET_SUPPLIER_LIST)
-    fun getSupplierList(): Call<ArrayList<SupplierResponse>>
+    fun getSupplierList(@HeaderMap headers: Map<String, String>): Call<ArrayList<SupplierResponse>>
 
     @GET(GET_CUSTOMER_LIST)
-    fun getCustomerList(): Call<ArrayList<CustomerResponse>>
+    fun getCustomerList(@HeaderMap headers: Map<String, String>): Call<ArrayList<CustomerResponse>>
 
     @GET(GET_PARTICULAR_LIST)
-    fun getParticularList(): Call<ArrayList<StringResponse>>
+    fun getParticularList(@HeaderMap headers: Map<String, String>): Call<ArrayList<StringResponse>>
+
 
     @GET(GET_TRANSPORT_LIST)
-    fun getTransportList(): Call<ArrayList<StringResponse>>
+    fun getTransportList(@HeaderMap headers: Map<String, String>): Call<ArrayList<StringResponse>>
 
     @GET(GET_RECEIVING_LIST_PAGE)
-    fun getReceivingList(@Query("emp_id") emp_id: Int, @Query("page") page: Int): Call<ReceivingListResponse>
+    fun getReceivingList(@HeaderMap headers: Map<String, String>, @Query("emp_id") emp_id: Int, @Query("page") page: Int): Call<ReceivingListResponse>
 
     @GET(GET_RECEIVING_SEARCH_LIST)
-    fun getReceivingSearchList(@Query("emp_id") emp_id: Int): Call<ReceivingOrdersSearchListResponse>
+    fun getReceivingSearchList(@HeaderMap headers: Map<String, String>, @Query("emp_id") emp_id: Int): Call<ReceivingOrdersSearchListResponse>
 
     @GET(GET_RECEIVING_DETAILS)
-    fun getReceivingDetails(@Query("emp_id") emp_id: Int, @Query("order_no") orderNo: String): Call<ReceivingDetailResponse>
+    fun getReceivingDetails(@HeaderMap headers: Map<String, String>, @Query("emp_id") emp_id: Int, @Query("order_no") orderNo: String): Call<ReceivingDetailResponse>
 
     @POST(POST_ADD_RECEIVING)
-    fun postAddReceiving(@Body body: MultipartBody): Call<BaseResponseModel>
+    fun postAddReceiving(@HeaderMap headers: Map<String, String>, @Body body: MultipartBody): Call<BaseResponseModel>
 
 }

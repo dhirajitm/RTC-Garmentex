@@ -114,7 +114,7 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
     private fun getOrderReceivingDetails() {
         mBinding.progressbar.visibility = View.VISIBLE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.getReceivingDetails(SharedPrefHelper.getUserId(this), mBinding.orderNo.text.toString()).enqueue(object : Callback<ReceivingDetailResponse> {
+        retrofit.getReceivingDetails(getHeaderMap(), SharedPrefHelper.getUserId(this), mBinding.orderNo.text.toString()).enqueue(object : Callback<ReceivingDetailResponse> {
             override fun onResponse(call: Call<ReceivingDetailResponse>, response: Response<ReceivingDetailResponse>) {
                 mBinding.progressbar.visibility = View.GONE
                 if (response.isSuccessful) {
@@ -205,7 +205,7 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
         }
 
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.postAddReceiving(multipartBody.build())
+        retrofit.postAddReceiving(getHeaderMap(), multipartBody.build())
             .enqueue(
                 object : Callback<BaseResponseModel> {
                     override fun onResponse(call: Call<BaseResponseModel>, response: Response<BaseResponseModel>) {
@@ -262,7 +262,7 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
     private fun getSearchOrderListItems() {
         mBinding.progressbar.visibility = View.VISIBLE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.getReceivingSearchList(SharedPrefHelper.getUserId(this)).enqueue(object : Callback<ReceivingOrdersSearchListResponse> {
+        retrofit.getReceivingSearchList(getHeaderMap(), SharedPrefHelper.getUserId(this)).enqueue(object : Callback<ReceivingOrdersSearchListResponse> {
             override fun onResponse(call: Call<ReceivingOrdersSearchListResponse>, response: Response<ReceivingOrdersSearchListResponse>) {
                 mBinding.progressbar.visibility = View.GONE
                 if (response.isSuccessful) {
@@ -286,6 +286,14 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
     override fun onItemUpdate(pos: Int, data: ParticularsData) {
         if (data.receivedItems.size > 0)
             receivingDetails!!.particularsData[data.receivedItems[0].parentPos] = data
+    }
+
+    private fun getHeaderMap(): Map<String, String> {
+        val headerMap = mutableMapOf<String, String>()
+        headerMap["userId"] = SharedPrefHelper.getUserId(this).toString()
+        headerMap["branchId"] = SharedPrefHelper.getBranchId(this).toString()
+        headerMap["token"] = SharedPrefHelper.getUserToken(this)
+        return headerMap
     }
 
 }

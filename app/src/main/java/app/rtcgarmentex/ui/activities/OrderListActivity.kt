@@ -31,7 +31,8 @@ class OrderListActivity : BaseActivity() {
         mBinding = ActivityOrderListBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        mBinding.orderListRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mBinding.orderListRv.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         mBinding.orderListRv.setHasFixedSize(true)
         mBinding.orderListRv.adapter = orderListAdapter
 
@@ -75,25 +76,29 @@ class OrderListActivity : BaseActivity() {
     private fun getOrderListPage() {
         mBinding.progressbar.visibility = VISIBLE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.getOrderList(SharedPrefHelper.getUserId(this), currentPage).enqueue(object : Callback<OrderListResponse> {
-            override fun onResponse(call: Call<OrderListResponse>, response: Response<OrderListResponse>) {
-                mBinding.progressbar.visibility = GONE
-                if (response.isSuccessful) {
-                    if (response.body()!!.status) {
-                        orderListAdapter.setData(response.body()!!.data)
-                        totalPage = response.body()!!.totalPage
-                        setPageView()
+        retrofit.getOrderList(getHeaderMap(), SharedPrefHelper.getUserId(this), currentPage)
+            .enqueue(object : Callback<OrderListResponse> {
+                override fun onResponse(
+                    call: Call<OrderListResponse>,
+                    response: Response<OrderListResponse>
+                ) {
+                    mBinding.progressbar.visibility = GONE
+                    if (response.isSuccessful) {
+                        if (response.body()!!.status) {
+                            orderListAdapter.setData(response.body()!!.data)
+                            totalPage = response.body()!!.totalPage
+                            setPageView()
+                        }
+                    } else {
+                        Utils.errorMessage(response, this@OrderListActivity)
                     }
-                } else {
-                    Utils.errorMessage(response, this@OrderListActivity)
                 }
-            }
 
-            override fun onFailure(call: Call<OrderListResponse>, t: Throwable) {
-                mBinding.progressbar.visibility = GONE
-                ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
-            }
-        })
+                override fun onFailure(call: Call<OrderListResponse>, t: Throwable) {
+                    mBinding.progressbar.visibility = GONE
+                    ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
+                }
+            })
     }
 
     private fun validated(): Boolean {
@@ -112,8 +117,15 @@ class OrderListActivity : BaseActivity() {
         Utils.hideKeyboard(this)
         mBinding.progressbar.visibility = VISIBLE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.searchOrderList(SharedPrefHelper.getUserId(this), mBinding.searchEt.text.toString().trim()).enqueue(object : Callback<OrderListResponse> {
-            override fun onResponse(call: Call<OrderListResponse>, response: Response<OrderListResponse>) {
+        retrofit.searchOrderList(
+            getHeaderMap(),
+            SharedPrefHelper.getUserId(this),
+            mBinding.searchEt.text.toString().trim()
+        ).enqueue(object : Callback<OrderListResponse> {
+            override fun onResponse(
+                call: Call<OrderListResponse>,
+                response: Response<OrderListResponse>
+            ) {
                 mBinding.progressbar.visibility = GONE
                 if (response.isSuccessful) {
                     if (response.body()!!.status) {
@@ -156,4 +168,13 @@ class OrderListActivity : BaseActivity() {
             }
         }
     }
+
+    private fun getHeaderMap(): Map<String, String> {
+        val headerMap = mutableMapOf<String, String>()
+        headerMap["userId"] = SharedPrefHelper.getUserId(this).toString()
+        headerMap["branchId"] = SharedPrefHelper.getBranchId(this).toString()
+        headerMap["token"] = SharedPrefHelper.getUserToken(this)
+        return headerMap
+    }
+
 }

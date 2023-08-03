@@ -61,14 +61,17 @@ class HomeActivity : BaseActivity() {
                     editProfile()
                     true
                 }
+
                 R.id.change_password -> {
                     changePassword()
                     true
                 }
+
                 R.id.sign_out -> {
                     signOut()
                     true
                 }
+
                 else -> {
                     true
                 }
@@ -101,12 +104,12 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun signOut() {
-/*
-        SharedPrefHelper.setPassword(this, "")
-        SharedPrefHelper.setUserId(this, -1)
-        SharedPrefHelper.setUserName(this, "")
-        SharedPrefHelper.setRememberMe(this, false)
-*/
+        /*
+                SharedPrefHelper.setPassword(this, "")
+                SharedPrefHelper.setUserId(this, -1)
+                SharedPrefHelper.setUserName(this, "")
+                SharedPrefHelper.setRememberMe(this, false)
+        */
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
@@ -115,23 +118,37 @@ class HomeActivity : BaseActivity() {
     private fun getOrderList() {
         mBinding.progressbar.visibility = View.VISIBLE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.getOrderList(SharedPrefHelper.getUserId(this), 1).enqueue(object : Callback<OrderListResponse> {
-            override fun onResponse(call: Call<OrderListResponse>, response: Response<OrderListResponse>) {
-                mBinding.progressbar.visibility = View.GONE
-                if (response.isSuccessful) {
-                    if (response.body()!!.status) {
-                        mBinding.orderCountTv.text = "Totol Orders: ${response.body()!!.totalRecords}"
+        retrofit.getOrderList(getHeaderMap(), SharedPrefHelper.getUserId(this), 1)
+            .enqueue(object : Callback<OrderListResponse> {
+                override fun onResponse(
+                    call: Call<OrderListResponse>,
+                    response: Response<OrderListResponse>
+                ) {
+                    mBinding.progressbar.visibility = View.GONE
+                    if (response.isSuccessful) {
+                        if (response.body()!!.status) {
+                            mBinding.orderCountTv.text =
+                                "Totol Orders: ${response.body()!!.totalRecords}"
+                        }
+                    } else {
+                        Utils.errorMessage(response, this@HomeActivity)
                     }
-                } else {
-                    Utils.errorMessage(response, this@HomeActivity)
+
                 }
 
-            }
-
-            override fun onFailure(call: Call<OrderListResponse>, t: Throwable) {
-                mBinding.progressbar.visibility = View.GONE
-                ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
-            }
-        })
+                override fun onFailure(call: Call<OrderListResponse>, t: Throwable) {
+                    mBinding.progressbar.visibility = View.GONE
+                    ToastHelper.showSnackBar(mBinding.root, getString(R.string.api_failed))
+                }
+            })
     }
+
+    private fun getHeaderMap(): Map<String, String> {
+        val headerMap = mutableMapOf<String, String>()
+        headerMap["userId"] = SharedPrefHelper.getUserId(this).toString()
+        headerMap["branchId"] = SharedPrefHelper.getBranchId(this).toString()
+        headerMap["token"] = SharedPrefHelper.getUserToken(this)
+        return headerMap
+    }
+
 }

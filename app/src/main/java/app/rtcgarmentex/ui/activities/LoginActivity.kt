@@ -95,6 +95,8 @@ class LoginActivity : BaseActivity() {
                         SharedPrefHelper.setPassword(this@LoginActivity, mBinding.userPasswordEt.text.toString().trim())
                         val reps = response.body()?.data
                         SharedPrefHelper.setUserId(this@LoginActivity, reps!!.id)
+                        SharedPrefHelper.setBranchId(this@LoginActivity, reps.branchId)
+                        SharedPrefHelper.setUserToken(this@LoginActivity, reps.token)
                         SharedPrefHelper.setEmail(this@LoginActivity, reps.email)
                         SharedPrefHelper.setUserName(this@LoginActivity, reps.name)
                         SharedPrefHelper.setPhone(this@LoginActivity, reps.phone.toString())

@@ -69,7 +69,7 @@ class ProfileActivity : BaseActivity() {
         )
         mBinding.progressbar.visibility = View.VISIBLE
         val retrofit = ApiClient.buildService(ApiService::class.java)
-        retrofit.updateProfile(profileRequest).enqueue(object : Callback<BaseResponseModel> {
+        retrofit.updateProfile(getHeaderMap(), profileRequest).enqueue(object : Callback<BaseResponseModel> {
             override fun onResponse(call: Call<BaseResponseModel>, response: Response<BaseResponseModel>) {
                 mBinding.progressbar.visibility = View.GONE
                 if (response.isSuccessful) {
@@ -90,4 +90,13 @@ class ProfileActivity : BaseActivity() {
             }
         })
     }
+
+    private fun getHeaderMap(): Map<String, String> {
+        val headerMap = mutableMapOf<String, String>()
+        headerMap["userId"] = SharedPrefHelper.getUserId(this).toString()
+        headerMap["branchId"] = SharedPrefHelper.getBranchId(this).toString()
+        headerMap["token"] = SharedPrefHelper.getUserToken(this)
+        return headerMap
+    }
+
 }

@@ -11,11 +11,15 @@ data class LoginResponse(
         val email: String,
         @SerializedName("id")
         val id: Int,
+        @SerializedName("branch_id")
+        val branchId: Int,
         @SerializedName("name")
         val name: String,
         @SerializedName("phone")
         val phone: Long,
         @SerializedName("status")
-        val status: String
+        val status: String,
+        @SerializedName("token")
+        val token: String
     )
 }

@@ -9,6 +9,8 @@ class SharedPrefHelper {
 
         private const val KEY_REMEMBER_ME = "remember_me"
         private const val KEY_USER_ID = "id"
+        private const val KEY_BRANCH_ID = "branch_id"
+        private const val KEY_TOKEN = "token"
         private const val KEY_PASSWORD = "password"
         private const val KEY_USER_NAME = "name"
         private const val KEY_EMAIL = "email"
@@ -53,6 +55,22 @@ class SharedPrefHelper {
 
         fun getUserId(context: Context): Int {
             return getSharedPreference(context).getInt(KEY_USER_ID, -1)
+        }
+
+        fun setBranchId(context: Context, value: Int) {
+            getSharedPreferenceEditor(context).putInt(KEY_BRANCH_ID, value).apply()
+        }
+
+        fun getBranchId(context: Context): Int {
+            return getSharedPreference(context).getInt(KEY_BRANCH_ID, -1)
+        }
+
+        fun setUserToken(context: Context, value: String) {
+            getSharedPreferenceEditor(context).putString(KEY_TOKEN, value).apply()
+        }
+
+        fun getUserToken(context: Context): String {
+            return getSharedPreference(context).getString(KEY_TOKEN, "").toString()
         }
 
         fun setUserName(context: Context, value: String) {

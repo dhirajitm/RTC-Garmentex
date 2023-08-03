@@ -60,9 +60,11 @@ class ApiClient {
             oktHttpClientBuilder.addInterceptor { chain ->
                 val builder = chain.request().newBuilder()
                     .addHeader("Accept", "application/json")
-//                    .addHeader("Authorization", "Bearer " + AppSharedPref.getToken(MyApplication.getApplicationContext()))
-//                    .addHeader("apiAuthType", API_AUTH_TYPE)
-//                    .addHeader("token", AuthKeyHelper.getInstance().token.toString())
+/*
+                    .addHeader("userId", "")
+                    .addHeader("branchId", "")
+                    .addHeader("token", "")
+*/
                 chain.proceed(builder.build())
             }
 
