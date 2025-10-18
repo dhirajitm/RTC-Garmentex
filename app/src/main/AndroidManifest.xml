@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RTCGarmentex"
         android:usesCleartextTraffic="true"
-        tools:targetApi="32">
+        tools:targetApi="35">
         <activity
             android:name=".ui.activities.AddReceivingActivity"
             android:exported="false"

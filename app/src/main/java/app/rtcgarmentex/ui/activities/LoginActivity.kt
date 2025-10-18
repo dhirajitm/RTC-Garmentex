@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.activity.enableEdgeToEdge
 import app.rtcgarmentex.R
 import app.rtcgarmentex.data.request.LoginRequest
 import app.rtcgarmentex.data.response.LoginResponse
@@ -31,6 +32,7 @@ class LoginActivity : BaseActivity() {
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(mBinding.root)

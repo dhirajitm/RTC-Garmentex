@@ -2,6 +2,7 @@ package app.rtcgarmentex.ui.activities
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import app.rtcgarmentex.R
 import app.rtcgarmentex.data.request.ProfileRequest
 import app.rtcgarmentex.data.response.BaseResponseModel
@@ -19,6 +20,7 @@ import retrofit2.Response
 class ProfileActivity : BaseActivity() {
     lateinit var mBinding: ActivityProfileBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         mBinding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(mBinding.root)

@@ -6,6 +6,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.rtcgarmentex.R
 import app.rtcgarmentex.data.response.OrderListResponse
@@ -27,6 +28,7 @@ class OrderListActivity : BaseActivity() {
     private var totalPage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         mBinding = ActivityOrderListBinding.inflate(layoutInflater)
         setContentView(mBinding.root)

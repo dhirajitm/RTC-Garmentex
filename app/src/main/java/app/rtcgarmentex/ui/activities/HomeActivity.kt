@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.widget.PopupMenu
 import app.rtcgarmentex.R
 import app.rtcgarmentex.data.response.OrderListResponse
@@ -20,6 +21,7 @@ import retrofit2.Response
 class HomeActivity : BaseActivity() {
     lateinit var mBinding: ActivityHomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         mBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(mBinding.root)

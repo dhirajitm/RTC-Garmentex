@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import app.rtcgarmentex.R
 import app.rtcgarmentex.data.request.PasswordRequest
@@ -26,6 +27,7 @@ import java.util.*
 class PasswordActivity : BaseActivity() {
     lateinit var mBinding: ActivityPasswordBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         mBinding = ActivityPasswordBinding.inflate(layoutInflater)
         setContentView(mBinding.root)

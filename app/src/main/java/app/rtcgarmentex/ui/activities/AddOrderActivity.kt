@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.rtcgarmentex.R
 import app.rtcgarmentex.data.ParticularModel
@@ -56,6 +57,7 @@ class AddOrderActivity : BaseActivity(), ParticularListener {
     private var supplierId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         mBinding = ActivityAddOrderBinding.inflate(layoutInflater)
         setContentView(mBinding.root)

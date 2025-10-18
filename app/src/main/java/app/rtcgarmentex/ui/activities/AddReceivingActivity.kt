@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
 import app.rtcgarmentex.R
 import app.rtcgarmentex.data.response.BaseResponseModel
@@ -38,6 +39,7 @@ class AddReceivingActivity : BaseActivity(), ReceivingParticularBoxListener {
     var receivingDetails: ReceivingDetailResponse.ReceivingDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         mBinding = ActivityAddReceivingBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
