@@ -17,18 +17,14 @@ ext {
     minSdkVersion = 24
     compileSdkVersion = 36
     targetSdkVersion = 35
-    versionCode = 7
-    versionName = "1.1.0"
+    versionCode = 3
+    versionName = "1.0.2"
 }
 
 allprojects {
     repositories {
         google()
         mavenCentral()
-/*
-        maven { url "https://maven.google.com" }
-        maven { url 'https://jitpack.io' }
-*/
     }
 }
 
